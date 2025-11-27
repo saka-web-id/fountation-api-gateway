@@ -11,6 +11,12 @@ spring.security.oauth2.client.registration.user-accounts-app-oidc.provider=sprin
 spring.security.oauth2.client.registration.user-accounts-app-oidc.client-id=user-accounts-app
 spring.security.oauth2.client.registration.user-accounts-app-oidc.client-secret=secret
 spring.security.oauth2.client.registration.user-accounts-app-oidc.authorization-grant-type=authorization_code
-spring.security.oauth2.client.registration.user-accounts-app-oidc.redirect-uri="http://127.0.0.1:8080/login/oauth2/code/{registrationId}"
+spring.security.oauth2.client.registration.user-accounts-app-oidc.redirect-uri="http://localhost:8080/login/oauth2/code/{registrationId}"
 spring.security.oauth2.client.registration.user-accounts-app-oidc.scope=openid, profile, accounts.read
 spring.security.oauth2.client.registration.user-accounts-app-oidc.client-name=user-accounts-app-oidc
+
+spring.cloud.gateway.default-filters=TokenRelay
+
+spring.cloud.gateway.routes[0].id=user-service
+spring.cloud.gateway.routes[0].uri=http://localhost:8084
+spring.cloud.gateway.routes[0].predicates[0]=Path=/user/**
