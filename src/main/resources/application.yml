@@ -1,0 +1,32 @@
+server:
+    port: 8080
+spring:
+    application:
+        name: fountation-api-gateway
+    cloud:
+        gateway:
+            default-filters:
+            - TokenRelay=
+            routes:
+            -   id: user-service
+                predicates:
+                - Path=/user/**
+                uri: http://localhost:8084
+    security:
+        oauth2:
+            client:
+                provider:
+                    spring:
+                        issuer-uri: http://localhost:9000
+                registration:
+                    user-accounts-app-oidc:
+                        authorization-grant-type: authorization_code
+                        client-id: user-accounts-app
+                        client-name: user-accounts-app-oidc
+                        client-secret: secret
+                        provider: spring
+                        redirect-uri: '"http://127.0.0.1:8080/login/oauth2/code/{registrationId}"'
+                        scope: openid, profile, accounts.read
+                resourceserver:
+                    jwt:
+                        jwk-set-uri: http://localhost:9000/oauth2/jwks
